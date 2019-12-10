@@ -56,8 +56,8 @@ print(best_asteroid)
 
 i = 0
 while i < 200:
-    for p in directions:
-        vaporized = shoot_lazer(belt, best_asteroid[0], best_asteroid[1], p[0], p[1])
+    for dx, dy in directions:
+        vaporized = shoot_lazer(belt, best_asteroid[0], best_asteroid[1], dx, dy)
         i += 1 if vaporized else 0
         if i == 200:
             break
