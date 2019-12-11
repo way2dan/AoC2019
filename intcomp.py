@@ -5,9 +5,9 @@ class IntcodeController:
 
     def __init__(self, intcode, buffer=[], pointer=0):
         self.intcode = intcode
-        self.virgincode = intcode
+        self.virgincode = [] + intcode
         self.buffer = buffer
-        self.virginbuffer = buffer
+        self.virginbuffer = [] + buffer
         self.ib = 0
         self.pointer = pointer
         self.output = []
@@ -19,7 +19,7 @@ class IntcodeController:
         self.tracking = False
 
     def reset(self):
-        self.__init__(self.virgincode, self.virginbuffer)
+        self.__init__(self.virgincode, self.virginbuffer, pointer=0)
 
     def print(self):
         print('pointer=', self.pointer, 'opcode=', self.intcode[self.pointer],
