@@ -51,7 +51,7 @@ while axis_with_no_period:
     for c in axis_with_no_period:
         if compare(m0, moons, coordinate=c) and compare(v0, v, coordinate=c):
             periods.append(i)
-            axis_with_no_period.remove(kk)
+            axis_with_no_period.remove(c)
 
 p = periods[0] * periods[1] * periods[2]
 d1 = gcd(periods[0], periods[1])
