@@ -3,7 +3,7 @@ lens = {1: 4, 2: 4, 3: 2, 4: 2, 99: 1, 5: 3, 6: 3, 7: 4, 8: 4, 9: 2}
 
 class IntcodeController:
 
-    def __init__(self, intcode, buffer=[], pointer=0):
+    def __init__(self, intcode, buffer=[], pointer=0, extended={}, get_input=None):
         self.intcode = intcode
         self.virgincode = [] + intcode
         self.buffer = buffer
@@ -15,8 +15,10 @@ class IntcodeController:
         self.opcode = []
         self.lastopcode = 0
         self.relbase = 0
-        self.extended = {}
+        self.extended = extended
+        print(self.extended)
         self.tracking = False
+        self.get_input = get_input
 
     def reset(self):
         self.__init__(self.virgincode, self.virginbuffer, pointer=0)
@@ -53,6 +55,13 @@ class IntcodeController:
         if mode == 2:
             return self.read(self.intcode[self.pointer+offset]+self.relbase)
 
+    def read_input(self):
+        if not self.get_input:
+            self.ib += 1
+            return self.buffer[self.ib-1]
+        else:
+            return self.get_input()
+
     def onetick(self):
         self.parsecurrentopcode()
         next_pointer = self.pointer + lens[self.opcode[0]]
@@ -64,8 +73,7 @@ class IntcodeController:
         if self.opcode[0] == 2:
             self.write(self.parameter(1) * self.parameter(2))
         if self.opcode[0] == 3:
-            self.write(self.buffer[self.ib])
-            self.ib += 1
+            self.write(self.read_input())
         if self.opcode[0] == 4:
             self.output.append(self.parameter(1))
         if self.opcode[0] == 5:
@@ -93,3 +101,12 @@ class IntcodeController:
         while (self.lastopcode != 4) and self.alive:
             self.pointer = self.onetick()
         return self.alive
+
+    def next_triple(self):
+        self.run2output()
+        self.run2output()
+        self.run2output()
+        if self.alive:
+            return self.output[-3:]
+        else:
+            return None
