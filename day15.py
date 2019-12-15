@@ -44,7 +44,7 @@ def fillroutes2(maze, r, c, route):
 
 def print_maze(maze, theroute):
     longest_route = 0
-    chars = {UNKNOWN: '?', WALL: '\u2588', EMPTY: ' ', OXYGEN: 'O'}
+    chars = {UNKNOWN: '\u2591', WALL: '\u2588', EMPTY: ' ', OXYGEN: 'O'}
     for r in range(Width):
         s = ''
         for c in range(Width):
@@ -63,7 +63,7 @@ def print_maze(maze, theroute):
 
 f = open('input15.txt', 'r')
 ls1 = f.read().split(',')
-vm = IntcodeController([int(s) for s in ls1], buffer=[])
+vm = IntcodeController([int(s) for s in ls1])
 
 Width = 50
 
