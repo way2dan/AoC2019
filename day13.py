@@ -1,16 +1,12 @@
 from intcomp import IntcodeController
 from numpy import sign
 
-
-def foo():
-    return sign(ball_x-paddle_x)
-
-
 f = open('input13.txt', 'r')
 ls1 = f.read().split(',')
 code = [int(s) for s in ls1]
 code[0] = 2
-vm = IntcodeController(code, buffer=[], get_input=foo)
+foo = lambda: sign(ball_x-paddle_x)
+vm = IntcodeController(code, get_input=foo)
 
 ball_x = 0
 paddle_x = 0
