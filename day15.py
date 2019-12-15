@@ -13,24 +13,22 @@ def fillroutes(maze, vm: IntcodeController, celltype, r, c, route):
     if (maze[r][c][0] != UNKNOWN) and (maze[r][c][0] != celltype):
         print('Something is wrong')
     maze[r][c][0] = celltype
-    if celltype == WALL:
-        return False
-    try:
-        if (len(maze[r][c][2]) > len(route)) or maze[r][c][1] == NOTVISITED:
-            maze[r][c][1] = len(route)
-            maze[r][c][2] = route
-            route = route + [(r, c)]
-            for d in range(1, 5):
-                dump = vm.dump()
-                vm.buffer.append(d)
-                vm.run2output()
-                celltype = vm.output[-1]
-                fillroutes(maze, vm, celltype, r+dr[d], c+dc[d], route)
-                vm.restore_from_dump(dump)
-    except IndexError:
-        print('not enough maze size')
-        return
-    return
+    if celltype != WALL:
+        try:
+            if (len(maze[r][c][2]) > len(route)) or maze[r][c][1] == NOTVISITED:
+                maze[r][c][1] = len(route)
+                maze[r][c][2] = route
+                route = route + [(r, c)]
+                for d in range(1, 5):
+                    dump = vm.dump()
+                    vm.buffer.append(d)
+                    vm.run2output()
+                    celltype = vm.output[-1]
+                    fillroutes(maze, vm, celltype, r+dr[d], c+dc[d], route)
+                    vm.restore_from_dump(dump)
+        except IndexError:
+            print('not enough maze size')
+            return
 
 
 def fillroutes2(maze, r, c, route):
@@ -55,9 +53,7 @@ def print_maze(maze, theroute):
             if maze[r][c][0] == EMPTY:
                 if maze[r][c][1] > longest_route:
                     longest_route = maze[r][c][1]
-
             s += the_char
-
         print(s)
     return longest_route
 
