@@ -4,6 +4,7 @@ UNKNOWN = -1
 WALL = 0
 EMPTY = 1
 OXYGEN = 2
+NOTVISITED = -1
 dr = [0, -1, 1, 0, 0]  # 0, North, South, West, East
 dc = [0, 0, 0, -1, 1]
 
@@ -15,7 +16,7 @@ def fillroutes(maze, vm: IntcodeController, celltype, r, c, route):
     if celltype == WALL:
         return False
     try:
-        if (len(maze[r][c][2]) > len(route)) or maze[r][c][1] == -1:
+        if (len(maze[r][c][2]) > len(route)) or maze[r][c][1] == NOTVISITED:
             maze[r][c][1] = len(route)
             maze[r][c][2] = route
             route = route + [(r, c)]
@@ -34,7 +35,7 @@ def fillroutes(maze, vm: IntcodeController, celltype, r, c, route):
 
 def fillroutes2(maze, r, c, route):
     if maze[r][c][0] != WALL and \
-            ((len(maze[r][c][2]) > len(route)) or maze[r][c][1] == -1):
+            ((len(maze[r][c][2]) > len(route)) or maze[r][c][1] == NOTVISITED):
         maze[r][c][1] = len(route)
         maze[r][c][2] = route
         route = route + [(r, c)]
@@ -67,7 +68,7 @@ vm = IntcodeController([int(s) for s in ls1])
 
 Width = 50
 
-maze = [[[UNKNOWN, -1, []] for _ in range(Width)] for i in range(Width)]
+maze = [[[UNKNOWN, NOTVISITED, []] for _ in range(Width)] for i in range(Width)]
 fillroutes(maze, vm, EMPTY, Width // 2, Width // 2, [])
 chars = {UNKNOWN: '?', WALL: '\u2588', EMPTY: ' ', OXYGEN: 'O'}
 for r,c in product(range(Width), range(Width)):
@@ -80,7 +81,7 @@ for r,c in product(range(Width), range(Width)):
 print_maze(maze, theroute)
 print(len(theroute))
 
-new_maze = [[[maze[i][j][0], -1, []] for j in range(Width)] for i in range(Width)]
+new_maze = [[[maze[i][j][0], NOTVISITED, []] for j in range(Width)] for i in range(Width)]
 
 fillroutes2(new_maze, oxy_r, oxy_c, [])
 print(print_maze(new_maze, []))
