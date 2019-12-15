@@ -16,9 +16,24 @@ class IntcodeController:
         self.lastopcode = 0
         self.relbase = 0
         self.extended = extended
-        print(self.extended)
         self.tracking = False
         self.get_input = get_input
+
+    def dump(self):
+        return self.intcode.copy(), self.buffer.copy(), self.ib, self.pointer, self.output.copy(), \
+               self.alive, self.opcode.copy(), self.lastopcode, self.relbase, self.extended.copy()
+
+    def restore_from_dump(self, dump):
+        self.intcode = dump[0]
+        self.buffer = dump[1]
+        self.ib = dump[2]
+        self.pointer = dump[3]
+        self.output = dump[4]
+        self.alive = dump[5]
+        self.opcode = dump[6]
+        self.lastopcode = dump[7]
+        self.relbase = dump[8]
+        self.extended = dump[9]
 
     def reset(self):
         self.__init__(self.virgincode, self.virginbuffer, pointer=0)
